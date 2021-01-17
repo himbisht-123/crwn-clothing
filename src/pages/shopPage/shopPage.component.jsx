@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+//import { render } from '@testing-library/react';
 import React from 'react';
 import SHOP_DATA from './shopPagedata';
 import '../../components/collectionPreview/collectionPreview.component';
