@@ -1,5 +1,5 @@
 //import { render } from '@testing-library/react';
-import React from 'react';
+import React,{useEffect} from 'react';
 import {Route} from 'react-router-dom';
 import CollectionsOverviewContainer from '../../components/collection-overview/collection-overview.container';
 import {connect} from 'react-redux';
@@ -12,15 +12,14 @@ import {createStructuredSelector} from 'reselect';
 import {selectIsCollectionsLoaded} from '../../redux/shop/shop.selectors.js';
 
 const CollectionPageWithSpinner=WithSpinner(CollectionPage);
- class ShopPage extends React.Component{
+ const ShopPage=({match,fetchCollectionsStart,isCollectionsLoad})=>{
 
-   
-     componentDidMount(){
-       const {fetchCollectionsStart}=this.props;
-         fetchCollectionsStart();
-     }
-  render(){
-    const {match,isCollectionsLoad}=this.props;
+   useEffect(()=>{
+     fetchCollectionsStart();
+   },[fetchCollectionsStart]);   
+  
+  
+   // const {match,isCollectionsLoad}=this.props;
    
     return(
 
@@ -31,7 +30,7 @@ const CollectionPageWithSpinner=WithSpinner(CollectionPage);
 ); 
     
   }
-}
+
  
 const mapStateToProps=createStructuredSelector({
  

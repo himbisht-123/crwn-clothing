@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 
 import './sign-in.style.scss';
 import FormInput from '../form-input/form-input.component';
@@ -8,19 +8,13 @@ import {ButtonBarContainer,SignInContainer,SignInTitle} from './sign-in.style';
 import {googleSignInStart,emailSignInStart} from '../../redux/user/user.action.js';
 import {connect} from 'react-redux';
 
-class SignIn extends React.Component{
-    constructor(props){
-        super(props);
-
-        this.state={
-            email:'',
-            password:''
-        }
-    }
-  handlesubmit=async (e)=>{
+const SignIn=({emailSignInStart,googleSignInStart})=>{
+    const [userCredentials,setCredentials]=useState({email:'',password:''});
+    const {email,password}=userCredentials;
+  const handlesubmit=async (e)=>{
   e.preventDefault();
-   const {emailSignInStart}=this.props;
-   const {email,password}=this.state;
+   
+   const {email,password}=userCredentials;
 //    try{
 //     await auth.signInWithEmailAndPassword(email,password);
 //     this.setState({email:'',password:''})  
@@ -31,25 +25,24 @@ class SignIn extends React.Component{
     emailSignInStart(email,password);
  };
 
- handlechange=(e)=>{
+
+ const handlechange=(e)=>{
    const {value,name}=e.target;
 
-   this.setState({[name]:value});
+   setCredentials({...userCredentials,[name]:value});
  }
 
-    render()
-    {
-        const {googleSignInStart}=this.props;
+        // const {googleSignInStart}=this.props;
         return(
             <SignInContainer>
             <SignInTitle>I already have an account</SignInTitle>
             <span>Sign in with your email and password</span>
 
-            <form onSubmit={this.handlesubmit}>
-            <FormInput name="email" type="email" label="email" value={this.state.email} handlechange={this.handlechange}required/>
+            <form onSubmit={handlesubmit}>
+            <FormInput name="email" type="email" label="email" value={email} handlechange={handlechange}required/>
           
-            <FormInput name="password" type="password"  label="password" value={this.state.password}
-            handlechange={this.handlechange} required/>
+            <FormInput name="password" type="password"  label="password" value={password}
+            handlechange={handlechange} required/>
              <ButtonBarContainer>
 
             <CustomButton type="submit"> Sign In</CustomButton>
@@ -59,8 +52,6 @@ class SignIn extends React.Component{
             </SignInContainer>
         )
     }
-
-};
 const mapDispatchToProps=dispatch=>({
     googleSignInStart:()=>dispatch(googleSignInStart()),
     emailSignInStart:(email,password)=>dispatch(emailSignInStart({email,password})) 
